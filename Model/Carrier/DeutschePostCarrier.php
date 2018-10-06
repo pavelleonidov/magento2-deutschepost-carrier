@@ -1,4 +1,6 @@
 <?php
+namespace PavelLeonidov\DeutschePostCarrier\Model\Carrier;
+
 /*******************************************************************
  *  Copyright notice
  *
@@ -22,12 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ******************************************************************/
-
-namespace PavelLeonidov\DeutschePostCarrier\Model\Carrier;
-
-<?php
-
-namespace Cloudways\Shippingmodule\Model\Carrier;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
