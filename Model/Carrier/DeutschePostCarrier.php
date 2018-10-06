@@ -38,6 +38,7 @@ use Magento\Quote\Model\Quote\Address\RateResult\Method;
 use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Xml\Security;
 
 class DeutschePostCarrier extends AbstractCarrierOnline implements CarrierInterface
 {
@@ -102,6 +103,9 @@ class DeutschePostCarrier extends AbstractCarrierOnline implements CarrierInterf
 		return [$this->getCarrierCode() => __($this->getConfigData('name'))];
 	}
 
+	protected function _doShipmentRequest(\Magento\Framework\DataObject $request) {;
+	}
+	
 	public function collectRates(RateRequest $request)
 	{
 		if (!$this->isActive())

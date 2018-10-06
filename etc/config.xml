@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
 	<default>
 		<carriers>
-			<pavelleonidov_deutschepostcarrier>
+			<deutschepost>
 				<active>0</active>
 				<sallowspecific>0</sallowspecific>
 				<price>0</price>
@@ -11,7 +11,7 @@
 				<title>Deutsche Post</title>
 				<is_online>1</is_online>
 				<specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
-			</pavelleonidov_deutschepostcarrier>
+			</deutschepost>
 		</carriers>
 	</default>
 </config>
