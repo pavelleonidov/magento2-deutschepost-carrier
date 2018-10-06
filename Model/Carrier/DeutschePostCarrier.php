@@ -27,7 +27,8 @@ namespace PavelLeonidov\DeutschePostCarrier\Model\Carrier;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
-use Magento\Shipping\Model\Carrier\AbstractCarrier;
+
+use Magento\Shipping\Model\Carrier\AbstractCarrierOnline;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
 use Magento\Shipping\Model\Config;
 use Magento\Shipping\Model\Rate\ResultFactory;
@@ -38,26 +39,62 @@ use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Psr\Log\LoggerInterface;
 
-class DeutschePostCarrier extends AbstractCarrier implements CarrierInterface
+class DeutschePostCarrier extends AbstractCarrierOnline implements CarrierInterface
 {
-	protected $_code = 'deutschepost';
+	const CODE = 'deutschepost';
+	protected $_code = self::CODE;
+	protected $_request;
+	protected $_result;
+	protected $_baseCurrencyRate;
+	protected $_xmlAccessRequest;
+	protected $_localeFormat;
+	protected $_logger;
+	protected $configHelper;
+	protected $_errors = [];
 	protected $_isFixed = true;
-	protected $_rateResultFactory;
-	protected $_rateMethodFactory;
 
 	public function __construct(
-		ScopeConfigInterface $scopeConfig,
-		ErrorFactory $rateErrorFactory,
-		LoggerInterface $logger,
-		ResultFactory $rateResultFactory,
-		MethodFactory $rateMethodFactory,
+		\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+		\Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
+		\Psr\Log\LoggerInterface $logger,
+		Security $xmlSecurity,
+		\Magento\Shipping\Model\Simplexml\ElementFactory $xmlElFactory,
+		\Magento\Shipping\Model\Rate\ResultFactory $rateFactory,
+		\Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory,
+		\Magento\Shipping\Model\Tracking\ResultFactory $trackFactory,
+		\Magento\Shipping\Model\Tracking\Result\ErrorFactory $trackErrorFactory,
+		\Magento\Shipping\Model\Tracking\Result\StatusFactory $trackStatusFactory,
+		\Magento\Directory\Model\RegionFactory $regionFactory,
+		\Magento\Directory\Model\CountryFactory $countryFactory,
+		\Magento\Directory\Model\CurrencyFactory $currencyFactory,
+		\Magento\Directory\Helper\Data $directoryData,
+		\Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
+		\Magento\Framework\Locale\FormatInterface $localeFormat,
+		Config $configHelper,
 		array $data = []
 	)
 
 	{
-		$this->_rateResultFactory = $rateResultFactory;
-		$this->_rateMethodFactory = $rateMethodFactory;
-		parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
+		$this->_localeFormat = $localeFormat;
+		$this->configHelper = $configHelper;
+		parent::__construct(
+			$scopeConfig,
+			$rateErrorFactory,
+			$logger,
+			$xmlSecurity,
+			$xmlElFactory,
+			$rateFactory,
+			$rateMethodFactory,
+			$trackFactory,
+			$trackErrorFactory,
+			$trackStatusFactory,
+			$regionFactory,
+			$countryFactory,
+			$currencyFactory,
+			$directoryData,
+			$stockRegistry,
+			$data
+		);
 	}
 
 	public function getAllowedMethods()
@@ -89,6 +126,10 @@ class DeutschePostCarrier extends AbstractCarrier implements CarrierInterface
 
 		$result->append($method);
 		return $result;
+	}
+
+	public function proccessAdditionalValidation(\Magento\Framework\DataObject $request) {
+		return true;
 	}
 }
 

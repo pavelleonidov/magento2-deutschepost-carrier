@@ -9,6 +9,7 @@
 				<model>PavelLeonidov\DeutschePostCarrier\Model\Carrier\DeutschePostCarrier</model>
 				<name>Shipping Module</name>
 				<title>Deutsche Post</title>
+				<is_online>1</is_online>
 				<specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
 			</pavelleonidov_deutschepostcarrier>
 		</carriers>
