@@ -3,7 +3,7 @@
 	<system>
 		<section id="carriers" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
 			<group id="pavelleonidov_deutschepostcarrier" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-				<label>Cloudways Shipping Module</label>
+				<label>Deutsche Post Shipping</label>
 				<field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
 					<label>Enabled</label>
 					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
