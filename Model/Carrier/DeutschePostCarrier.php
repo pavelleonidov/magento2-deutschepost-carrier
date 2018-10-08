@@ -98,14 +98,32 @@ class DeutschePostCarrier extends AbstractCarrierOnline implements CarrierInterf
 		);
 	}
 
+	/**
+	 * Get allowed methods from given carrier code
+	 *
+	 * @return array
+	 */
 	public function getAllowedMethods()
 	{
 		return [$this->getCarrierCode() => __($this->getConfigData('name'))];
 	}
 
+
+
+	/**
+	 * Do shipment request to carrier web service, obtain Print Shipping Labels and process errors in response
+	 * We don't send a shipment request in this case, so keep it blank
+	 *
+	 * @param \Magento\Framework\DataObject $request
+	 * @return \Magento\Framework\DataObject
+	 */
 	protected function _doShipmentRequest(\Magento\Framework\DataObject $request) {;
 	}
-	
+
+	/**
+	 * Checks if shipping method can collect rates
+	 * @return bool
+	 */
 	public function collectRates(RateRequest $request)
 	{
 		if (!$this->isActive())
@@ -132,8 +150,40 @@ class DeutschePostCarrier extends AbstractCarrierOnline implements CarrierInterf
 		return $result;
 	}
 
+
+	/**
+	 * Processing additional validation to check if carrier applicable.
+	 *
+	 * @param \Magento\Framework\DataObject $request
+	 * @return $this|bool|\Magento\Framework\DataObject
+	 * @deprecated
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 */
 	public function proccessAdditionalValidation(\Magento\Framework\DataObject $request) {
 		return true;
+	}
+
+	/**
+	 * Get tracking information
+	 *
+	 * @param string $tracking
+	 * @return string|false
+	 * @api
+	 */
+	public function getTrackingInfo($trackingNumber)
+	{
+		$tracking = $this->_trackStatusFactory->create();
+
+		$url = 'https://www.deutschepost.de/sendung/simpleQueryResult.html?form.sendungsnummer=' . $trackingNumber . '&form';
+
+		$tracking->setData([
+			'carrier' => $this->_code,
+			'carrier_title' => $this->getConfigData('title'),
+			'tracking' => $trackingNumber,
+			'url' => $url,
+		]);
+		return $tracking;
 	}
 }
 
